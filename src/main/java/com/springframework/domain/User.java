@@ -1,9 +1,6 @@
 package com.springframework.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -23,6 +20,7 @@ public class User extends BaseEntity{
     private String email;
     private String password;
 
+    @Builder
     public User(Long id, String firstName, String lastName, String userName, String email, String password) {
         super(id);
         this.firstName = firstName;
