@@ -38,10 +38,22 @@ public class UserController {
 
     @PostMapping("/signUpSuccess")
     public String saveNewCustomer(@ModelAttribute User user){
-
+        System.out.println(user.getEmail());
         userService.save(user);
         return "redirect:/user/";
     }
 
+    @PostMapping("/loginSuccess")
+    public String customerLoggedIn(@ModelAttribute("user") User user){
+        String message = userService.checkLoginInfo(user);
+        if(message != null){
+            return "redirect:/user/";
+        } else{
+            System.out.println("Invalid username");
+            return "redirect:/user/login";
+        }
+
+
+    }
 
 }

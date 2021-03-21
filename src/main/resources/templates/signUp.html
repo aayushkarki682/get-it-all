@@ -15,26 +15,26 @@
             <div class="form-row">
                <div class="form-group col-md-6">
                    <label for="firstName">First Name </label>
-                   <input type="text" class="form-control" id="firstName" placeholder="First Name" th:text="*{firstName}" />
+                   <input type="text" class="form-control" id="firstName" placeholder="First Name" th:field="*{firstName}" />
                </div>
                <div class="form-group col-md-6">
                    <label for="lastName">Last Name </label>
-                   <input type="text" class="form-control" id="lastName" placeholder="First Name" th:text="*{lastName}" />
+                   <input type="text" class="form-control" id="lastName" placeholder="First Name" th:field="*{lastName}" />
                </div>
 
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Email Address" th:text="*{email}">
+                <input type="email" class="form-control" id="email" placeholder="Email Address" th:field="*{email}">
             </div>
             <div class="form-group">
                 <label for="username">User Name</label>
-                <input type="text" class="form-control" id="username" placeholder="Username" th:text="*{userName}">
+                <input type="text" class="form-control" id="username" placeholder="Username" th:field="*{userName}">
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" th:text="*{password}">
+                    <input type="password" class="form-control" id="password" th:field="*{password}">
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Sign up</button>
