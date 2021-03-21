@@ -40,7 +40,13 @@ public class UserServiceImpl implements UserService {
         String password = user.getPassword();
         Optional<User> returnUser = Optional.ofNullable(userRepository.findByUserName(userName));
         if(!returnUser.isEmpty()){
-            return "It is valid";
+            User returnedUser = returnUser.get();
+            if(returnedUser.getPassword().equals(password)){
+                return "It is valid";
+            } else {
+                return null;
+            }
+
         }else{
             return null;
         }
