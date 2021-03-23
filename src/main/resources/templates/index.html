@@ -19,7 +19,7 @@
                 <li><a href="#">Page 1</a></li>
                 <li><a href="#">Page 2</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right" th:if="${loggedUserId} == 0">
                 <li><a th:href="@{/user/signUp}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <li><a th:href="@{/user/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             </ul>
@@ -29,6 +29,42 @@
         <img src="../static/images/ayush.jpg" width="1000" th:src="@{images/ayush.jpg}" />
 
     </div>
+    <div class="container" th:if="${loggedUserId} != 0">
+
+        <div class="panel panel-default">
+            <div class="panel-heading" th:text="${loggedUser.firstName}"> </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel-body" th:text="${userpost.post}"></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel-body">
+                        <img src="../../static/images/guacamole400x400WithX.jpg"
+                             th:src="@{'/user/' + ${loggedUserId} + '/'+${userpost.id}+ '/userPostImage'}"
+                             width="200" height="200">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container" th:if="${loggedUserId} != 0">
+        <div class="container">
+            <form th:object="${userpost}" th:action="@{'/user/' + ${loggedUserId} + '/createPostSuccess'}" method="post">
+                <div class="form-group">
+                    <label for="newpost">Your post</label>
+                    <textarea class="form-control" id="newpost" th:field="*{post}">
+                        Write what is on your mind
+                    </textarea>
+                </div>
+                <input type="submit" class="btn btn-primary">
+
+            </form>
+            <a th:href="@{'/user/' + ${loggedUserId} +'/createPost'}" class="btn btn-primary">Upload Image</a>
+
+        </div>
+    </div>
+
 
 </body>
 </html>

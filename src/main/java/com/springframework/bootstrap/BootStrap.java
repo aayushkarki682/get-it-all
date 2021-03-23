@@ -19,6 +19,7 @@ public class BootStrap implements CommandLineRunner {
 
         User user1 = User.builder().firstName("Aayush").lastName("Karki").userName("aaykar").email("aak@gmail.com")
                         .password("kkkkk").build();
+
         User user2 = User.builder().firstName("Laxman").lastName("GC").userName("laxgc").email("lax@gmail.com")
                           .password("putiiiiii").build();
         User user3 = User.builder().firstName("Sabina").lastName("Karki").userName("sabkar").email("sobu@gmail.com")

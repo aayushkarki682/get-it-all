@@ -1,26 +1,49 @@
 package com.springframework.controllers;
 
 import com.springframework.domain.User;
+import com.springframework.domain.UserPosts;
+import com.springframework.services.ImageService;
+import com.springframework.services.UserPostService;
 import com.springframework.services.UserService;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 @Controller
 @RequestMapping("/user/")
 public class UserController {
 
     private final UserService userService;
+    private final UserPostService userPostService;
+    private final ImageService imageService;
 
-    public UserController(UserService userService) {
+
+
+    public UserController(UserService userService, UserPostService userPostService, ImageService imageService) {
         this.userService = userService;
+        this.userPostService = userPostService;
+        this.imageService = imageService;
     }
 
+    private Long loggedUserId = 0L;
+    private User loggedUser = new User();
+    private UserPosts userPosts = new UserPosts();
+
+
     @GetMapping
-    public String getIndexPage(){
+    public String getIndexPage(Model model){
+        model.addAttribute("loggedUser", loggedUser);
+        model.addAttribute("loggedUserId", loggedUserId);
+        model.addAttribute("userpost", userPosts);
+
+      //  model.addAttribute("allPosts", );  todo add way to pass all images for the user
+        System.out.println("User post id from index page after the post was submitted + "+userPosts.getId());
         return "index";
     }
 
@@ -37,14 +60,20 @@ public class UserController {
     }
 
     @PostMapping("/signUpSuccess")
-    public String saveNewCustomer(@ModelAttribute User user){
+    public String saveNewCustomer(@ModelAttribute User user, Model model){
         System.out.println(user.getEmail());
-        userService.save(user);
+        User savedUser = userService.save(user);
+        loggedUser = user;
+        loggedUserId = savedUser.getId();
+
         return "redirect:/user/";
     }
 
     @PostMapping("/loginSuccess")
-    public String customerLoggedIn(@ModelAttribute("user") User user){
+    public String customerLoggedIn(@ModelAttribute("user") User user, Model model){
+        loggedUserId = user.getId();
+        loggedUser = user;
+
         String message = userService.checkLoginInfo(user);
         if(message != null){
             return "redirect:/user/";
@@ -52,8 +81,49 @@ public class UserController {
             System.out.println("Invalid username");
             return "redirect:/user/login";
         }
+    }
 
+    @GetMapping("/{id}/createPost")
+    public String createNewPost(@PathVariable Long id, Model model){
+        model.addAttribute("id", id);
+        model.addAttribute("userpost", userPosts);
+        System.out.println("Inside the image upload form + "+userPosts.getId());
+        return "imageUploadForm";
 
+    }
+
+    @PostMapping("/{id}/createPostSuccess")
+    public String createPostSuccess(@PathVariable Long id, @ModelAttribute("userpost") UserPosts newUserPosts){
+        UserPosts savedUserPost = userPostService.saveUserPost(id, newUserPosts);
+        userPosts.setId(savedUserPost.getId());
+        userPosts.setUser(savedUserPost.getUser());
+        userPosts.setPost(savedUserPost.getPost());
+        userPosts.setImage(savedUserPost.getImage());
+        return "redirect:/user/";
+    }
+
+    @PostMapping("/{id}/{postId}/imagePostSuccess")
+    public String imagePostSuccess(@PathVariable("id") Long id, @PathVariable("postId") Long postId,
+                                   @RequestParam("imagefile") MultipartFile file){
+        System.out.println(postId + "from controller");
+        imageService.saveImageFile(id,postId,  file);
+        return "redirect:/user/";
+    }
+
+    @GetMapping("/{userId}/{postId}/userPostImage")
+    public void renderImageFromDB(@PathVariable("userId") Long userId, @PathVariable("postId") Long postId,
+                                  HttpServletResponse response) throws Exception{
+        UserPosts userPosts = userService.findUserPostById(userId, postId);
+        if(userPosts.getImage() != null){
+            byte[] byteArray = new byte[userPosts.getImage().length];
+            int i = 0;
+            for (Byte wrappedByte : userPosts.getImage()){
+                byteArray[i++] =wrappedByte;
+            }
+            response.setContentType("image/jpeg");
+            InputStream is = new ByteArrayInputStream(byteArray);
+            IOUtils.copy(is, response.getOutputStream());
+        }
     }
 
 }

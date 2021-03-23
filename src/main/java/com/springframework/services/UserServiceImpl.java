@@ -1,6 +1,7 @@
 package com.springframework.services;
 
 import com.springframework.domain.User;
+import com.springframework.domain.UserPosts;
 import com.springframework.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+
 
     @Override
     public List<User> getAllUsers() {
@@ -50,5 +53,17 @@ public class UserServiceImpl implements UserService {
         }else{
             return null;
         }
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id).get();
+    }
+
+    @Override
+    public UserPosts findUserPostById(Long userId, Long postId) {
+        User user = findById(userId);
+        UserPosts userPost = user.getUserPost(postId);
+        return userPost;
     }
 }
