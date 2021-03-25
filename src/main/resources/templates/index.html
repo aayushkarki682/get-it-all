@@ -23,6 +23,9 @@
                 <li><a th:href="@{/user/signUp}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <li><a th:href="@{/user/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             </ul>
+            <ul class="nav navbar-nav navbar-right" th:if="${loggedUserId} != 0">
+                <li><a th:href="@{/user/logout}" ><span class="glyphicon glyphicon-log-out"></span> Log Out</a> </li>
+            </ul>
         </div>
     </nav>
     <div class="container">
@@ -76,7 +79,7 @@
 
         function increaseLikeValue(){
            let userId = document.getElementById('userPostId').value;
-            alert(userId);
+          //  alert(userId);
             first_call_to_ajax(userId);
         }
 
@@ -88,8 +91,7 @@
             var json={
                 'id': userId
             };
-            console.log(userId);
-            console.log("Call to ajax now will happen");
+
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
@@ -98,7 +100,7 @@
                 dataType: 'text',
                 cache: false,
                 success: function (data){
-                    alert(data);
+
                     document.getElementById("like").value = data;
                 },
                 error: function (e) {

@@ -72,6 +72,13 @@ public class UserController {
         return "login";
     }
 
+    @GetMapping("/logout")
+    public String logOutUser(){
+        loggedUser = new User();
+        loggedUserId = 0L;
+        return "redirect:/user/";
+    }
+
     @PostMapping("/signUpSuccess")
     public String saveNewCustomer(@ModelAttribute User user, Model model){
         System.out.println(user.getEmail());
@@ -150,6 +157,8 @@ public class UserController {
             IOUtils.copy(is, response.getOutputStream());
         }
     }
+
+
 
 
 }
