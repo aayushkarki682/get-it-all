@@ -22,11 +22,11 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void saveImageFile(Long userId, Long postId, MultipartFile file) {
-        System.out.println("inside the saveImageFile");
+        //System.out.println("inside the saveImageFile");
         try{
-            System.out.println("inside the saveImageFile");
+          //  System.out.println("inside the saveImageFile");
             User user = userRepository.findById(userId).get();
-            System.out.println(user.getUserName());
+        //    System.out.println(user.getUserName());
             Byte[] byteObjects = new Byte[file.getBytes().length];
             int i = 0;
             for(byte b: file.getBytes()){

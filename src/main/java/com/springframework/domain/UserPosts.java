@@ -1,9 +1,6 @@
 package com.springframework.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Lob;
@@ -21,7 +18,7 @@ public class UserPosts extends BaseEntity{
     @Lob
     private Byte[] image;
 
-
+    @Builder
     public UserPosts(Long id, String post, Byte[] image) {
         super(id);
         this.post = post;

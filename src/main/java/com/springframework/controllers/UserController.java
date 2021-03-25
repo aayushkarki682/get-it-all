@@ -8,6 +8,7 @@ import com.springframework.services.UserService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,12 +36,20 @@ public class UserController {
     private User loggedUser = new User();
     private UserPosts userPosts = new UserPosts();
 
+    @InitBinder("userpost")
+    public void initOwnerBinder(WebDataBinder webDataBinder){
+        webDataBinder.setDisallowedFields("id");
+    }
 
     @GetMapping
     public String getIndexPage(Model model){
+        System.out.println(loggedUserId+"after login");
         model.addAttribute("loggedUser", loggedUser);
         model.addAttribute("loggedUserId", loggedUserId);
         model.addAttribute("userpost", userPosts);
+//        if(loggedUserId != 0){
+//
+//        }
 
       //  model.addAttribute("allPosts", );  todo add way to pass all images for the user
         System.out.println("User post id from index page after the post was submitted + "+userPosts.getId());
@@ -71,11 +80,14 @@ public class UserController {
 
     @PostMapping("/loginSuccess")
     public String customerLoggedIn(@ModelAttribute("user") User user, Model model){
-        loggedUserId = user.getId();
-        loggedUser = user;
 
-        String message = userService.checkLoginInfo(user);
-        if(message != null){
+      //  loggedUserId = userService.findByUserName(user.getFirstName());
+
+
+        User retrievedUser = userService.checkLoginInfo(user);
+        if(retrievedUser != null){
+            loggedUserId = retrievedUser.getId();
+            loggedUser = retrievedUser;
             return "redirect:/user/";
         } else{
             System.out.println("Invalid username");
@@ -94,11 +106,20 @@ public class UserController {
 
     @PostMapping("/{id}/createPostSuccess")
     public String createPostSuccess(@PathVariable Long id, @ModelAttribute("userpost") UserPosts newUserPosts){
-        UserPosts savedUserPost = userPostService.saveUserPost(id, newUserPosts);
-        userPosts.setId(savedUserPost.getId());
-        userPosts.setUser(savedUserPost.getUser());
-        userPosts.setPost(savedUserPost.getPost());
-        userPosts.setImage(savedUserPost.getImage());
+        User newUser = userService.findById(id);
+        System.out.println(newUser.getFirstName());
+        newUserPosts.setUser(newUser);
+        newUser.getUserPosts().add(newUserPosts);
+
+        UserPosts savedUserPost = userPostService.save(newUserPosts);
+//        userPosts.setId(savedUserPost.getId());
+//        userPosts.setUser(savedUserPost.getUser());
+//        userPosts.setPost(savedUserPost.getPost());
+//        userPosts.setImage(savedUserPost.getImage());
+//        loggedUser.getUserPosts().add(newUserPosts);
+        userPosts = savedUserPost;
+        loggedUser = newUser;
+      //  userPostService.saveUserPost(id, newUserPosts);
         return "redirect:/user/";
     }
 
@@ -125,5 +146,6 @@ public class UserController {
             IOUtils.copy(is, response.getOutputStream());
         }
     }
+
 
 }

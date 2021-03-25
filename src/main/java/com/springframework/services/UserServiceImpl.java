@@ -38,14 +38,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String checkLoginInfo(User user) {
+    public User checkLoginInfo(User user) {
         String userName = user.getUserName();
         String password = user.getPassword();
         Optional<User> returnUser = Optional.ofNullable(userRepository.findByUserName(userName));
         if(!returnUser.isEmpty()){
             User returnedUser = returnUser.get();
             if(returnedUser.getPassword().equals(password)){
-                return "It is valid";
+                return returnedUser;
             } else {
                 return null;
             }
@@ -65,5 +65,10 @@ public class UserServiceImpl implements UserService {
         User user = findById(userId);
         UserPosts userPost = user.getUserPost(postId);
         return userPost;
+    }
+
+    @Override
+    public List<UserPosts> findAllUserPosts(User user) {
+        return null;
     }
 }

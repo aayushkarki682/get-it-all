@@ -30,7 +30,7 @@
 
     </div>
     <div class="container" th:if="${loggedUserId} != 0">
-
+<!--      //  <div th:each="userPost: ${currentAllUserPosts}"><-->
         <div class="panel panel-default">
             <div class="panel-heading" th:text="${loggedUser.firstName}"> </div>
             <div class="row">
@@ -45,6 +45,7 @@
                     </div>
                 </div>
             </div>
+<!--      //  </div>-->
         </div>
 
     </div>
@@ -64,6 +65,7 @@
 
         </div>
     </div>
+
 
 
 </body>

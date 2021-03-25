@@ -2,10 +2,7 @@ package com.springframework.domain;
 
 import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,21 +33,17 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH},
+            mappedBy = "user", fetch= FetchType.EAGER)
     private Set<UserPosts> userPosts = new HashSet<>();
 
-    public UserPosts addUserPost(UserPosts userPost){
-        userPost.setUser(this);
-        this.userPosts.add(userPost);
-        System.out.println("From inside the user add method + "+ userPost.getId() );
-        return userPost;
-    }
+
 
     public UserPosts getUserPost(Long userPostId){
         for(UserPosts u : userPosts){
-            System.out.println("getting userpost id from getuser post" + u.getId());
+         //   System.out.println("getting userpost id from getuser post" + u.getId());
             if(u.getId() == userPostId){
-                System.out.println("id matched");
+              //  System.out.println("id matched");
                 return u;
             }
         }

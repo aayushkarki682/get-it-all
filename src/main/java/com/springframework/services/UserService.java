@@ -10,9 +10,11 @@ public interface UserService{
     User save(User user);
     List<User> getAllUsers();
     long count();
-    String checkLoginInfo(User user);
+    User checkLoginInfo(User user);
 
 
     User findById(Long id);
     UserPosts findUserPostById(Long userId, Long postId);
+
+    List<UserPosts> findAllUserPosts(User user);
 }
