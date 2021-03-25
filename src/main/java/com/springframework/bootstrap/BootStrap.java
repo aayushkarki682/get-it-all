@@ -38,8 +38,7 @@ public class BootStrap implements CommandLineRunner {
 
 
         userService.save(user1);
-//        userPostService.saveUserPost(user1.getId(), userPost1);
-      //  userPostService.saveUserPost(user1.getId(), userPost1);
+
         userService.save(user2);
         userService.save(user3);
 

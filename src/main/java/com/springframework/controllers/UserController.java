@@ -47,9 +47,7 @@ public class UserController {
         model.addAttribute("loggedUser", loggedUser);
         model.addAttribute("loggedUserId", loggedUserId);
         model.addAttribute("userpost", userPosts);
-//        if(loggedUserId != 0){
-//
-//        }
+
 
       //  model.addAttribute("allPosts", );  todo add way to pass all images for the user
         System.out.println("User post id from index page after the post was submitted + "+userPosts.getId());
@@ -81,7 +79,7 @@ public class UserController {
     @PostMapping("/loginSuccess")
     public String customerLoggedIn(@ModelAttribute("user") User user, Model model){
 
-      //  loggedUserId = userService.findByUserName(user.getFirstName());
+
 
 
         User retrievedUser = userService.checkLoginInfo(user);
