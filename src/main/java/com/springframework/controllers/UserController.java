@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Collection;
 
 @Controller
 @RequestMapping("/user/")
@@ -35,6 +36,11 @@ public class UserController {
     private Long loggedUserId = 0L;
     private User loggedUser = new User();
     private UserPosts userPosts = new UserPosts();
+
+    @ModelAttribute("allUserPosts")
+    public Collection<UserPosts> populateWithUserPosts(){
+        return userPostService.findAllUserPosts();
+    }
 
     @InitBinder("userpost")
     public void initOwnerBinder(WebDataBinder webDataBinder){

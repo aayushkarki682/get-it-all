@@ -26,29 +26,33 @@
         </div>
     </nav>
     <div class="container">
-        <img src="../static/images/ayush.jpg" width="1000" th:src="@{images/ayush.jpg}" />
-
+        <img src="../static/images/ayush.jpg" width="200" height="200" th:src="@{images/ayush.jpg}" />
     </div>
-    <div class="container" th:if="${loggedUserId} != 0">
-<!--      //  <div th:each="userPost: ${currentAllUserPosts}"><-->
-        <div class="panel panel-default">
-            <div class="panel-heading" th:text="${loggedUser.firstName}"> </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="panel-body" th:text="${userpost.post}"></div>
-                </div>
-                <div class="col-md-6">
-                    <div class="panel-body">
-                        <img src="../../static/images/guacamole400x400WithX.jpg"
-                             th:src="@{'/user/' + ${loggedUserId} + '/'+${userpost.id}+ '/userPostImage'}"
-                             width="200" height="200">
+    <div class="container"  th:if="${loggedUserId} != 0">
+
+        <div class="container-fluid" th:if="${#lists.size(allUserPosts)} != 0">
+
+            <div class="panel panel-default mt-2" th:each="uniqUserPost : ${allUserPosts}">
+                <input type="hidden" id="userPostId" name="userPostId" th:value="${uniqUserPost.id}" />
+                <div class="panel-heading" th:text="${uniqUserPost.user.firstName}"> </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="panel-body" th:text="${uniqUserPost.post}"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="panel-body">
+                                <img src="../../static/images/guacamole400x400WithX.jpg"
+                                     th:src="@{'/user/' + ${uniqUserPost.user.id} + '/'+${uniqUserPost.id}+ '/userPostImage'}"
+                                    width="200" height="200">
+                            </div>
+                        </div>
+                        <label for="like">Like</label>
+                        <input type="button" id="like" th:value="${uniqUserPost.likePressed}" onclick="increaseLikeValue()">
                     </div>
                 </div>
-            </div>
-<!--      //  </div>-->
-        </div>
 
-    </div>
+        </div>
+        </div>
     <div class="container" th:if="${loggedUserId} != 0">
         <div class="container">
             <form th:object="${userpost}" th:action="@{'/user/' + ${loggedUserId} + '/createPostSuccess'}" method="post">
@@ -66,7 +70,47 @@
         </div>
     </div>
 
+<script>
 
+
+
+        function increaseLikeValue(){
+           let userId = document.getElementById('userPostId').value;
+            alert(userId);
+            first_call_to_ajax(userId);
+        }
+
+
+
+
+        function first_call_to_ajax(userId) {
+            let id_for_like = {};
+            var json={
+                'id': userId
+            };
+            console.log(userId);
+            console.log("Call to ajax now will happen");
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "api/likeClick",
+                data: JSON.stringify(json),
+                dataType: 'text',
+                cache: false,
+                success: function (data){
+                    alert(data);
+                    document.getElementById("like").value = data;
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            })
+        }
+
+
+
+
+</script>
 
 </body>
 </html>

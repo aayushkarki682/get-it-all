@@ -23,7 +23,7 @@ public class BootStrap implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-       UserPosts userPost1 = UserPosts.builder().post("Aayush Karki").build();
+       UserPosts userPost1 = UserPosts.builder().post("Aayush Karki first post").build();
 
 
         User user1 = User.builder().firstName("Aayush").lastName("Karki").userName("aaykar").email("aak@gmail.com")
@@ -34,10 +34,14 @@ public class BootStrap implements CommandLineRunner {
         User user3 = User.builder().firstName("Sabina").lastName("Karki").userName("sabkar").email("sobu@gmail.com")
                 .password("iloveuaayush").build();
         userPost1.setUser(user1);
+
         user1.getUserPosts().add(userPost1);
 
 
         userService.save(user1);
+        UserPosts userPost2 = UserPosts.builder().post("Aayush Karki second post").build();
+        userPost2.setUser(user2);
+        user1.getUserPosts().add(userPost2);
 
         userService.save(user2);
         userService.save(user3);

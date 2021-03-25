@@ -17,14 +17,20 @@ public class UserPosts extends BaseEntity{
     private String post;
     @Lob
     private Byte[] image;
+    private int likePressed;
 
     @Builder
-    public UserPosts(Long id, String post, Byte[] image) {
+    public UserPosts(Long id, String post, Byte[] image, int likePressed) {
         super(id);
         this.post = post;
         this.image = image;
+        this.likePressed = likePressed;
     }
 
     @ManyToOne
     private User user;
+
+    public int addUserLike(){
+        return this.likePressed++;
+    }
 }

@@ -45,12 +45,17 @@ public class UserPostsImpl implements UserPostService{
     }
 
     @Override
-    public List<UserPosts> findAllUserPosts(Long userId) {
-        return userPostRepo.findAllByUserId(userId);
+    public List<UserPosts> findAllUserPosts() {
+        return userPostRepo.findAll();
     }
 
     @Override
     public UserPosts save(UserPosts userPosts) {
         return userPostRepo.save(userPosts);
+    }
+
+    @Override
+    public UserPosts findById(Long postId) {
+        return userPostRepo.findById(postId).get();
     }
 }
