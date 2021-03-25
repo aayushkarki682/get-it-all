@@ -4,7 +4,7 @@
 
 ### *Trying to make a simple web application where user can*     
 * login and post status and images.
-* User can also look other user posts **remaining  
+* User can also look other user posts   
 * User would be able to like and comment on posts **remaining  
 * User would also be able to send the friend request **remaining  
 
