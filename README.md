@@ -1,8 +1,5 @@
 # get-it-all
-## SpringBoot  
-## SpringMVC
-## WebDevelopment
-## JAVA
+*Just a simple attempt to make a website using spring boot, java, hibernate, html, bootstrap, css and javascript*
 
 ### *Trying to make a simple web application where user can*    
 * login and post status and images.
