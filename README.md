@@ -10,3 +10,5 @@
 ## Since we are solely focusing on back end web development and this is a fresh start  
 We will be focusing solely on back end. After successful completion, front end will have all our time  
 *But anybody interested in doing UI can feel free to do it. I would really love and appreciate it* 😉
+
+## I would recommend forking this repository so that later on it would be easy to merge codes
