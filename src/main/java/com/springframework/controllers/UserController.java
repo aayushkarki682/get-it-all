@@ -74,6 +74,7 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logOutUser(){
+        System.out.println(loggedUser.sizeOfPosts());
         loggedUser = new User();
         loggedUserId = 0L;
         return "redirect:/user/";

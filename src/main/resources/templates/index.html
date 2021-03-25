@@ -24,10 +24,32 @@
                 <li><a th:href="@{/user/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" th:if="${loggedUserId} != 0">
-                <li><a th:href="@{/user/logout}" ><span class="glyphicon glyphicon-log-out"></span> Log Out</a> </li>
+                <li><a href="#" data-toggle="modal" data-target="#logoutModal" >
+                    <span class="glyphicon glyphicon-log-out"></span> Log Out</a>
+                </li>
             </ul>
         </div>
     </nav>
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" th:text="'Hey ' + ${loggedUser.firstName} + ' is it time to say good bye?'"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+
+                    <p th:text="${#lists.isEmpty(loggedUser.userPosts)} ? 'You posted  0 post, you are mean' :  (' you posted '+${#lists.size(loggedUser.userPosts)}+' thank you') "> </p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                    <a th:href="@{/user/logout}" class="btn btn-primary"><span class="glyphicon glyphicon-log-out"></span> Log Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <img src="../static/images/ayush.jpg" width="200" height="200" th:src="@{images/ayush.jpg}" />
     </div>

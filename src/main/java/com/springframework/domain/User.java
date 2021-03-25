@@ -51,10 +51,15 @@ public class User extends BaseEntity {
     }
 
     public void updateUserPost(UserPosts userP){
+
         for(UserPosts u : userPosts){
             if(userP.getId() == u.getId()){
                 u = userP;
             }
         }
+    }
+
+    public int sizeOfPosts(){
+        return userPosts.size();
     }
 }
