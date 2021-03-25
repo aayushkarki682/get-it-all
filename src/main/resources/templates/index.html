@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/index.js}"></script>
 </head>
 <body>
     <nav class="navbar navbar-inverse">
@@ -41,7 +42,7 @@
                 </div>
                 <div class="modal-body" >
 
-                    <p th:text="${#lists.isEmpty(loggedUser.userPosts)} ? 'You posted  0 post, you are mean' :  (' you posted '+${#lists.size(loggedUser.userPosts)}+' thank you') "> </p>
+                    <p th:text="${#lists.isEmpty(loggedUser.userPosts)} ? 'You posted  0 post, you are mean' :  (' you posted total of '+${#lists.size(loggedUser.userPosts)}+' posts, so thank you') "> </p>
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
@@ -95,46 +96,6 @@
         </div>
     </div>
 
-<script>
-
-
-
-        function increaseLikeValue(){
-           let userId = document.getElementById('userPostId').value;
-          //  alert(userId);
-            first_call_to_ajax(userId);
-        }
-
-
-
-
-        function first_call_to_ajax(userId) {
-            let id_for_like = {};
-            var json={
-                'id': userId
-            };
-
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: "api/likeClick",
-                data: JSON.stringify(json),
-                dataType: 'text',
-                cache: false,
-                success: function (data){
-
-                    document.getElementById("like").value = data;
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-            })
-        }
-
-
-
-
-</script>
 
 </body>
 </html>
