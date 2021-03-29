@@ -1,5 +1,6 @@
 package com.springframework.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,6 +36,7 @@ public class User extends BaseEntity {
 
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH},
             mappedBy = "user", fetch= FetchType.EAGER)
+    @JsonManagedReference
     private Set<UserPosts> userPosts = new HashSet<>();
 
 //    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH},

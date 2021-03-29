@@ -1,5 +1,7 @@
 package com.springframework.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,6 +24,7 @@ public class UserPosts extends BaseEntity{
 
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH},
                 mappedBy = "userPosts", fetch = FetchType.EAGER)
+    @JsonManagedReference
     private Set<Comments> comments = new HashSet<>();
 
     @Builder
@@ -33,6 +36,7 @@ public class UserPosts extends BaseEntity{
     }
 
     @ManyToOne
+    @JsonBackReference
     private User user;
 
     public Comments getComment(Long commentId){

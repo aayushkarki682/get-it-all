@@ -46,7 +46,10 @@ function postComment(id){
         dataType: 'text',
         cache:false,
         success: function (data){
-            alert(data);
+            var commentInfo = "comment_"+data;
+            console.log(commentInfo);
+            console.log(document.getElementById(commentId).value);
+            document.getElementById(commentInfo).value = document.getElementById(commentId).value; ;
         },
         error: function (e){
             console.log(e);

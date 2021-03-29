@@ -139,7 +139,7 @@
                     </div>
                     <div class="text-left" style="border: yellow 20px">
                         <ul th:each="comment: ${uniqUserPost.getComments()}">
-                            <li th:text="${comment.comment}" style="border: black 15px"></li>
+                            <li th:id="'comment_'+${comment.getId()}" th:text="${comment.comment}" style="border: black 15px"></li>
                         </ul>
                     </div>
 

@@ -11,6 +11,7 @@ public interface UserService{
     List<User> getAllUsers();
     long count();
     User checkLoginInfo(User user);
+    List<User> findAll();
 
 
     User findById(Long id);

@@ -2,14 +2,14 @@ package com.springframework.controllers.api;
 
 import com.springframework.domain.Comments;
 import com.springframework.domain.PostIdAndComment;
+import com.springframework.domain.User;
 import com.springframework.domain.UserPosts;
 import com.springframework.services.CommentService;
 import com.springframework.services.UserPostService;
 import com.springframework.services.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user/api/")
@@ -45,8 +45,23 @@ public class UserRestController {
         comments.setUserPosts(userPosts);
         userPosts.getComments().add(comments);
 
-        commentService.save(comments);
+        Comments savedComment = commentService.save(comments);
 
-        return comments.getComment();
+        return String.valueOf(savedComment.getId());
+    }
+
+    @GetMapping("/allUsers")
+    public List<User> getAllUsers(){
+        return userService.findAll();
+    }
+
+    @GetMapping("/forUser/{id}")
+    public User getForUser(@PathVariable Long id){
+        return userService.findById(id);
+    }
+
+    @GetMapping("/forUserPost/{postId}")
+    public UserPosts forUserPost(@PathVariable Long postId){
+        return userPostService.findById(postId);
     }
 }

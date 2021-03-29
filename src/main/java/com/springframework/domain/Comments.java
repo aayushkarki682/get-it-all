@@ -1,5 +1,6 @@
 package com.springframework.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -22,6 +23,7 @@ public class Comments extends BaseEntity {
     }
 
     @ManyToOne
+    @JsonBackReference
     private UserPosts userPosts;
 
 //    @ManyToOne

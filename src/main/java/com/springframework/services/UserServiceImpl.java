@@ -71,4 +71,9 @@ public class UserServiceImpl implements UserService {
     public List<UserPosts> findAllUserPosts(User user) {
         return null;
     }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll().stream().collect(Collectors.toList());
+    }
 }
