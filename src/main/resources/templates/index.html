@@ -2,14 +2,24 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Home page</title>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+
+
+    <link th:href="@{/css/index.css}" rel="stylesheet" >
     <script type="text/javascript" th:src="@{/js/index.js}"></script>
 </head>
 <body>
+
+<!--    This is for navbar-->
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -20,10 +30,15 @@
                 <li><a href="#">Page 1</a></li>
                 <li><a href="#">Page 2</a></li>
             </ul>
+
+<!--             this belongs to sign up and login-->
+
             <ul class="nav navbar-nav navbar-right" th:if="${loggedUserId} == 0">
                 <li><a th:href="@{/user/signUp}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <li><a th:href="@{/user/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             </ul>
+
+<!--            this belongs to log out-->
             <ul class="nav navbar-nav navbar-right" th:if="${loggedUserId} != 0">
                 <li><a href="#" data-toggle="modal" data-target="#logoutModal" >
                     <span class="glyphicon glyphicon-log-out"></span> Log Out</a>
@@ -31,60 +46,124 @@
             </ul>
         </div>
     </nav>
+
+    <!-- this is the modal for the log out button -->
+
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" >
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
+
+                <!-- Modal Header -->
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle" th:text="'Hey ' + ${loggedUser.firstName} + ' is it time to say good bye?'"></h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle"
+                        th:text="'Hey ' + ${loggedUser.firstName} + ' is it time to say good bye?'"></h5>
+
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" >
 
+                <!-- Modal Body -->
+
+                <div class="modal-body" >
                     <p th:text="${#lists.isEmpty(loggedUser.userPosts)} ? 'You posted  0 post, you are mean' :  (' you posted total of '+${#lists.size(loggedUser.userPosts)}+' posts, so thank you') "> </p>
                 </div>
+
+                <!-- Modal Footer -->
+
                 <div class="modal-footer">
                     <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
                     <a th:href="@{/user/logout}" class="btn btn-primary"><span class="glyphicon glyphicon-log-out"></span> Log Out</a>
                 </div>
+
             </div>
         </div>
     </div>
-    <div class="container">
-        <img src="../static/images/ayush.jpg" width="200" height="200" th:src="@{images/ayush.jpg}" />
+
+
+<!-- For Sabinas Image -->
+
+    <div class="container-fluid">
+        <img th:src="@{images/ayush.jpeg}" />
     </div>
-    <div class="container"  th:if="${loggedUserId} != 0">
 
-        <div class="container-fluid" th:if="${#lists.size(allUserPosts)} != 0">
 
-            <div class="panel panel-default mt-2" th:each="uniqUserPost : ${allUserPosts}">
-                <input type="hidden" id="userPostId" name="userPostId" th:value="${uniqUserPost.id}" />
-                <div class="panel-heading" th:text="${uniqUserPost.user.firstName}"> </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="panel-body" th:text="${uniqUserPost.post}"></div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel-body">
-                                <img src="../../static/images/guacamole400x400WithX.jpg"
-                                     th:src="@{'/user/' + ${uniqUserPost.user.id} + '/'+${uniqUserPost.id}+ '/userPostImage'}"
-                                    width="200" height="200">
-                            </div>
-                        </div>
-                        <label for="like">Like</label>
-                        <input type="button" id="like" th:value="${uniqUserPost.likePressed}" onclick="increaseLikeValue()">
+
+    <!-- This is all for User Posts -->
+<!-- checking if somebody has logged in, if nobody is logged in the posts will not be shown-->
+    <div class="container" th:if="${loggedUserId} != 0">
+        <!-- checking if the list of userpost sent is empty or not -->
+        <div   th:if="${#lists.size(allUserPosts)} != 0">
+            <!-- iterating over all the uer posts -->
+            <div class="card userPostCard" th:each="uniqUserPost : ${allUserPosts}" >
+                <div class="card-body" style="align-items: center">
+                    <!-- body starts -->
+                    <input type="hidden" id="userPostId" name="userPostId" th:value="${uniqUserPost.id}" />
+                    <!-- Heading of the first post which contains user name -->
+                    <h4 class="card-title" th:text="${uniqUserPost.user.firstName}"></h4>
+
+
+                    <hr>
+
+                    <p class="font-italic text-center card-text" th:text="${uniqUserPost.post}"></p>
+
+
+                    <div class="py-2 px-2" style="width: 25rem">
+                        <img src="../../static/images/guacamole400x400WithX.jpg" alt="Card image cap"
+                             th:src="@{'/user/' + ${uniqUserPost.user.id} + '/'+${uniqUserPost.id}+ '/userPostImage'}" class="card-img">
+
                     </div>
+
+
+                    <div>
+
+
+                            <a class="btn btn-primary socialButton card-link" href="#" id="like" th:value="${uniqUserPost.likePressed}" onclick="increaseLikeValue()">
+                                Like</a>
+
+
+                            <a th:href="'#userComment'+${uniqUserPost.id}" class="btn btn-primary socialButton card-link" data-toggle="collapse">Comment </a>
+
+                            <a href="#" class="btn btn-primary socialButton card-link"  >
+                                Share   </a>
+
+                        <div class="collapse" th:id="'userComment'+${uniqUserPost.id}">
+
+
+                                <input type="text" value="comment here">
+                                <a href="#" class="btn btn-info card-link" onclick="postComment()">Post Comment</a>
+
+                        </div>
+
+
+                    </div>
+                    <div class="text-left" style="border: yellow 20px">
+                        <ul th:each="comment: ${uniqUserPost.getComments()}">
+                            <li th:text="${comment.comment}" style="border: black 15px"></li>
+                        </ul>
+                    </div>
+
                 </div>
 
+
+
+
+
+            </div>
+
+
+
+
         </div>
-        </div>
+
+    </div>
+
     <div class="container" th:if="${loggedUserId} != 0">
-        <div class="container">
+
             <form th:object="${userpost}" th:action="@{'/user/' + ${loggedUserId} + '/createPostSuccess'}" method="post">
                 <div class="form-group">
                     <label for="newpost">Your post</label>
-                    <textarea class="form-control" id="newpost" th:field="*{post}">
+                    <textarea class="form-control" id="newpost" th:field="*{post}" style="width: 300px">
                         Write what is on your mind
                     </textarea>
                 </div>
@@ -93,8 +172,17 @@
             </form>
             <a th:href="@{'/user/' + ${loggedUserId} +'/createPost'}" class="btn btn-primary">Upload Image</a>
 
+    </div>
+
+    <div class="container">
+        <a href="#heram" class="btn btn-small" data-toggle="collapse">Buttom</a>
+        <div class="collapse" id="heram">
+            as;fljaldkngaljgdb
         </div>
     </div>
+
+
+
 
 
 </body>

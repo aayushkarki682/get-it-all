@@ -5,9 +5,6 @@ function increaseLikeValue(){
     first_call_to_ajax(userId);
 }
 
-
-
-
 function first_call_to_ajax(userId) {
     let id_for_like = {};
     var json={
@@ -30,3 +27,11 @@ function first_call_to_ajax(userId) {
         }
     })
 }
+
+function postComment(){
+
+    document.getElementById('newComment').innerHTML = "K ho hero dekhexa ta";
+    document.getElementById('newComment').hidden=false;
+    document.getElementById('reset').hidden=true;
+}
+

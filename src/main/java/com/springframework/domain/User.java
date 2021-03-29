@@ -37,6 +37,10 @@ public class User extends BaseEntity {
             mappedBy = "user", fetch= FetchType.EAGER)
     private Set<UserPosts> userPosts = new HashSet<>();
 
+//    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH},
+//            mappedBy = "user", fetch= FetchType.EAGER)
+//    private Set<Comments> comments = new HashSet<>();
+
 
 
     public UserPosts getUserPost(Long userPostId){
