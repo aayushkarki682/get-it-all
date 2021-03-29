@@ -28,10 +28,29 @@ function first_call_to_ajax(userId) {
     })
 }
 
-function postComment(){
+function postComment(id){
 
-    document.getElementById('newComment').innerHTML = "K ho hero dekhexa ta";
-    document.getElementById('newComment').hidden=false;
-    document.getElementById('reset').hidden=true;
+    var commentId = "comment"+id;
+    let commentVal = document.getElementById(commentId).value;
+    var json = {
+        'id': id,
+        'comment': commentVal
+    }
+
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "api/saveComment",
+        data: JSON.stringify(json),
+        dataType: 'text',
+        cache:false,
+        success: function (data){
+            alert(data);
+        },
+        error: function (e){
+            console.log(e);
+        }
+    })
 }
 

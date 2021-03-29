@@ -130,8 +130,8 @@
                         <div class="collapse" th:id="'userComment'+${uniqUserPost.id}">
 
 
-                                <input type="text" value="comment here">
-                                <a href="#" class="btn btn-info card-link" onclick="postComment()">Post Comment</a>
+                                <input type="text" th:id="'comment'+${uniqUserPost.id}" value="comment here">
+                                <a href="#" class="btn btn-info card-link" th:onclick="|postComment('${uniqUserPost.id}')|">Post Comment</a>
 
                         </div>
 
