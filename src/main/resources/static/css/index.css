@@ -1,11 +1,28 @@
+.userButtons{
+    display: flex;
+    margin: 10px;
+    align-content: space-evenly;
+}
+
+
 a.socialButton{
     display: inline;
     width: 100px;
+    margin: 10px;
 }
 .userPostCard{
-
-    margin-top: 10px;
-    margin-bottom: 10px;
+    border-style: solid;
+    border-width: 5px;
     width: 30rem;
+    margin: 10px auto;
+}
 
+.userPostImage{
+    display: flex;
+    justify-content: center;
+}
+
+.userPostImage img{
+
+    width: 25rem;
 }

@@ -81,7 +81,7 @@ public class UserController {
     }
 
     @PostMapping("/signUpSuccess")
-    public String saveNewCustomer(@ModelAttribute User user, Model model){
+    public String saveNewCustomer(@ModelAttribute User user){
         System.out.println(user.getEmail());
         User savedUser = userService.save(user);
         loggedUser = user;
@@ -91,11 +91,7 @@ public class UserController {
     }
 
     @PostMapping("/loginSuccess")
-    public String customerLoggedIn(@ModelAttribute("user") User user, Model model){
-
-
-
-
+    public String customerLoggedIn(@ModelAttribute("user") User user){
         User retrievedUser = userService.checkLoginInfo(user);
         if(retrievedUser != null){
             loggedUserId = retrievedUser.getId();

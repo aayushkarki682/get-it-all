@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,9 +15,11 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_posts")
-public class UserPosts extends BaseEntity{
+public class UserPosts implements Serializable {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String post;
     @Lob
     private Byte[] image;
@@ -29,7 +32,7 @@ public class UserPosts extends BaseEntity{
 
     @Builder
     public UserPosts(Long id, String post, Byte[] image, int likePressed) {
-        super(id);
+        this.id=id;
         this.post = post;
         this.image = image;
         this.likePressed = likePressed;

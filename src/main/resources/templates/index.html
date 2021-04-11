@@ -10,10 +10,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-
-
-
     <link th:href="@{/css/index.css}" rel="stylesheet" >
     <script type="text/javascript" th:src="@{/js/index.js}"></script>
 </head>
@@ -84,14 +80,14 @@
 <!-- For Sabinas Image -->
 
     <div class="container-fluid">
-        <img th:src="@{images/ayush.jpeg}" />
+        <img src="../static/images/ayush.jpg" th:src="@{images/ayush.jpg}" />
     </div>
 
 
 
     <!-- This is all for User Posts -->
 <!-- checking if somebody has logged in, if nobody is logged in the posts will not be shown-->
-    <div class="container" th:if="${loggedUserId} != 0">
+    <div class="container justify-content-center" th:if="${loggedUserId} != 0">
         <!-- checking if the list of userpost sent is empty or not -->
         <div   th:if="${#lists.size(allUserPosts)} != 0">
             <!-- iterating over all the uer posts -->
@@ -100,7 +96,7 @@
                     <!-- body starts -->
                     <input type="hidden" id="userPostId" name="userPostId" th:value="${uniqUserPost.id}" />
                     <!-- Heading of the first post which contains user name -->
-                    <h4 class="card-title" th:text="${uniqUserPost.user.firstName}"></h4>
+                    <h4 class="card-title text-center" th:text="${uniqUserPost.user.firstName}"></h4>
 
 
                     <hr>
@@ -108,16 +104,18 @@
                     <p class="font-italic text-center card-text" th:text="${uniqUserPost.post}"></p>
 
 
-                    <div class="py-2 px-2" style="width: 25rem">
+                    <div class="userPostImage py-2 px-2" th:if="${uniqUserPost.image} != null">
                         <img src="../../static/images/guacamole400x400WithX.jpg" alt="Card image cap"
                              th:src="@{'/user/' + ${uniqUserPost.user.id} + '/'+${uniqUserPost.id}+ '/userPostImage'}" class="card-img">
 
                     </div>
 
+                    <hr>
+
 
                     <div>
 
-
+                        <div class="userButtons">
                             <a class="btn btn-primary socialButton card-link" href="#" id="like" th:value="${uniqUserPost.likePressed}" onclick="increaseLikeValue()">
                                 Like</a>
 
@@ -126,6 +124,8 @@
 
                             <a href="#" class="btn btn-primary socialButton card-link"  >
                                 Share   </a>
+
+                        </div>
 
                         <div class="collapse" th:id="'userComment'+${uniqUserPost.id}">
 
