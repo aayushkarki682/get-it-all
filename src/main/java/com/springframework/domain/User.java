@@ -61,6 +61,18 @@ public class User implements Serializable {
                 .collect(Collectors.toSet());
     }
 
+    @Builder.Default
+    private Boolean accountNonExpired = true;
+
+    @Builder.Default
+    private Boolean accountNonLocked = true;
+
+    @Builder.Default
+    private Boolean credentialsNonExpired = true;
+
+    @Builder.Default
+    private Boolean enabled = true;
+
 
     public UserPosts getUserPost(Long userPostId){
         for(UserPosts u : userPosts){
@@ -85,4 +97,6 @@ public class User implements Serializable {
     public int sizeOfPosts(){
         return userPosts.size();
     }
+
+
 }

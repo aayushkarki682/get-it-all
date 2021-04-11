@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     public User checkLoginInfo(User user) {
         String userName = user.getUserName();
         String password = user.getPassword();
-        Optional<User> returnUser = Optional.ofNullable(userRepository.findByUserName(userName));
+        Optional<User> returnUser = userRepository.findByUserName(userName);
         if(!returnUser.isEmpty()){
             User returnedUser = returnUser.get();
             if(returnedUser.getPassword().equals(password)){
