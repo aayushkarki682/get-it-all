@@ -8,6 +8,8 @@
 * User would be able to like and comment on posts **remaining  
 * User would also be able to send the friend request **remaining  
 
+## Spring Security added
+
 ## Since we are solely focusing on back end web development and this is a fresh start  
 We will be focusing solely on back end. After successful completion, front end will have all our time  
 *But anybody interested in doing UI can feel free to do it. I would really love and appreciate it* 😉
