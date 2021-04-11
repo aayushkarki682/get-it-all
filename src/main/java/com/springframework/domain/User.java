@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -42,10 +43,23 @@ public class User implements Serializable {
     @JsonManagedReference
     private Set<UserPosts> userPosts = new HashSet<>();
 
-//    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH},
-//            mappedBy = "user", fetch= FetchType.EAGER)
-//    private Set<Comments> comments = new HashSet<>();
+    @Singular
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
+    private Set<Role> roles;
 
+
+    @Transient
+    private Set<Authority> authorities;
+
+    public Set<Authority> getAuthorities(){
+        return this.roles.stream()
+                .map(Role::getAuthorities)
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
+    }
 
 
     public UserPosts getUserPost(Long userPostId){
