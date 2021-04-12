@@ -2,9 +2,12 @@ package com.springframework.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import org.springframework.security.core.CredentialsContainer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,9 +17,10 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "user")
-public class User implements Serializable {
+public class User implements UserDetails, CredentialsContainer {
 
 
     @Id
@@ -28,15 +32,7 @@ public class User implements Serializable {
     private String email;
     private String password;
 
-    @Builder
-    public User(Long id, String firstName, String lastName, String userName, String email, String password, UserPosts userPosts) {
-        this.id=id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-    }
+
 
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH},
             mappedBy = "user", fetch= FetchType.EAGER)
@@ -44,7 +40,7 @@ public class User implements Serializable {
     private Set<UserPosts> userPosts = new HashSet<>();
 
     @Singular
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST }, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
@@ -52,13 +48,40 @@ public class User implements Serializable {
 
 
     @Transient
-    private Set<Authority> authorities;
-
-    public Set<Authority> getAuthorities(){
+    public Set<GrantedAuthority> getAuthorities() {
         return this.roles.stream()
                 .map(Role::getAuthorities)
                 .flatMap(Set::stream)
+                .map(authority -> {
+                    return new SimpleGrantedAuthority(authority.getPermission());
+                })
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public String getUsername() {
+        return this.userName;
+    }
+
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.accountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.credentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
     }
 
     @Builder.Default
@@ -73,6 +96,10 @@ public class User implements Serializable {
     @Builder.Default
     private Boolean enabled = true;
 
+    @Override
+    public void eraseCredentials() {
+        this.password = null;
+    }
 
     public UserPosts getUserPost(Long userPostId){
         for(UserPosts u : userPosts){

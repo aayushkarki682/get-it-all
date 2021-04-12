@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User checkLoginInfo(User user) {
-        String userName = user.getUserName();
+        String userName = user.getUsername();
         String password = user.getPassword();
         Optional<User> returnUser = userRepository.findByUserName(userName);
         if(!returnUser.isEmpty()){

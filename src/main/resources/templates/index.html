@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Home page</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -11,7 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link th:href="@{/css/index.css}" rel="stylesheet" >
-    <script type="text/javascript" th:src="@{/js/index.js}"></script>
+
 </head>
 <body>
 
@@ -29,13 +30,13 @@
 
 <!--             this belongs to sign up and login-->
 
-            <ul class="nav navbar-nav navbar-right" th:if="${loggedUserId} == 0">
+            <ul class="nav navbar-nav navbar-right" sec:authorize="!isAuthenticated()">
                 <li><a th:href="@{/user/signUp}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <li><a th:href="@{/user/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             </ul>
 
 <!--            this belongs to log out-->
-            <ul class="nav navbar-nav navbar-right" th:if="${loggedUserId} != 0">
+            <ul class="nav navbar-nav navbar-right" sec:authorize="isAuthenticated()">
                 <li><a href="#" data-toggle="modal" data-target="#logoutModal" >
                     <span class="glyphicon glyphicon-log-out"></span> Log Out</a>
                 </li>
@@ -50,9 +51,9 @@
             <div class="modal-content">
 
                 <!-- Modal Header -->
-                <div class="modal-header">
+                <div class="modal-header" sec:authorize="isAuthenticated()">
                     <h5 class="modal-title" id="exampleModalLongTitle"
-                        th:text="'Hey ' + ${loggedUser.firstName} + ' is it time to say good bye?'"></h5>
+                        th:text="'Hey  is it time to say good bye?'"></h5>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -69,7 +70,7 @@
 
                 <div class="modal-footer">
                     <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
-                    <a th:href="@{/user/logout}" class="btn btn-primary"><span class="glyphicon glyphicon-log-out"></span> Log Out</a>
+                    <a th:href="@{/logout}" class="btn btn-primary"><span class="glyphicon glyphicon-log-out"></span> Log Out</a>
                 </div>
 
             </div>
@@ -77,17 +78,13 @@
     </div>
 
 
-<!-- For Sabinas Image -->
 
-    <div class="container-fluid">
-        <img src="../static/images/ayush.jpg" th:src="@{images/ayush.jpg}" />
-    </div>
-
+    <p sec:authorize="isAuthenticated()" th:text="${#authentication.principal.firstName}">a,dnf</p>
 
 
     <!-- This is all for User Posts -->
 <!-- checking if somebody has logged in, if nobody is logged in the posts will not be shown-->
-    <div class="container justify-content-center" th:if="${loggedUserId} != 0">
+    <div class="container justify-content-center" sec:authorize="isAuthenticated()">
         <!-- checking if the list of userpost sent is empty or not -->
         <div   th:if="${#lists.size(allUserPosts)} != 0">
             <!-- iterating over all the uer posts -->
@@ -158,9 +155,9 @@
 
     </div>
 
-    <div class="container" th:if="${loggedUserId} != 0">
+    <div class="container" sec:authorize="isAuthenticated()">
 
-            <form th:object="${userpost}" th:action="@{'/user/' + ${loggedUserId} + '/createPostSuccess'}" method="post">
+            <form th:object="${userpost}" th:action="@{'/user/' + ${#authentication?.principal?.id} + '/createPostSuccess'}" method="post">
                 <div class="form-group">
                     <label for="newpost">Your post</label>
                     <textarea class="form-control" id="newpost" th:field="*{post}" style="width: 300px">
@@ -170,20 +167,14 @@
                 <input type="submit" class="btn btn-primary">
 
             </form>
-            <a th:href="@{'/user/' + ${loggedUserId} +'/createPost'}" class="btn btn-primary">Upload Image</a>
+            <a th:href="@{'/user/' + ${#authentication?.principal?.id} +'/createPost'}" class="btn btn-primary">Upload Image</a>
 
     </div>
 
-    <div class="container">
-        <a href="#heram" class="btn btn-small" data-toggle="collapse">Buttom</a>
-        <div class="collapse" id="heram">
-            as;fljaldkngaljgdb
-        </div>
-    </div>
 
 
 
-
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
 
 </body>
 </html>

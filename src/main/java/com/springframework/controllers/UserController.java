@@ -37,6 +37,31 @@ public class UserController {
     private User loggedUser = new User();
     private UserPosts userPosts = new UserPosts();
 
+//    @ModelAttribute("loggedUserId")
+//    public Long initLoggedUserId(Authentication authentication){
+//        authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if(authentication.isAuthenticated()){
+//            UserDetails loggedInUser = new User();
+//            loggedInUser =  (UserDetails) authentication.getPrincipal();
+//            return loggedInUser.getId();
+//        } else{
+//            return 0L;
+//        }
+//    }
+//
+//    @ModelAttribute("loggedUser")
+//    public User initLoggedUser(Authentication authentication){
+//        authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if(authentication.isAuthenticated()){
+//            return (User) authentication.getPrincipal();
+//        } else {
+//            return new User();
+//        }
+//    }
+
+//    @ModelAttribute("userPosts")
+//    public UserPosts initUserPost()
+
     @ModelAttribute("allUserPosts")
     public Collection<UserPosts> populateWithUserPosts(){
         return userPostService.findAllUserPosts();
