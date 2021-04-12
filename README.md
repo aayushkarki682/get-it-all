@@ -3,11 +3,11 @@
 
 
 ### *Trying to make a simple web application where user can*     
-* login and post status and images.
-* User can also look other user posts   
-* User would be able to like and comment on posts **remaining  
-* User would also be able to send the friend request **remaining  
-* Spring Security added
+* login and post status and images (done)
+* User can also look other user posts (done)
+* User would be able to like and comment on posts  (comment done) **like functionality remaining
+* User would also be able to send the friend request **remaining
+* Spring Security added **login and logout action of spring security added
 
 ## Since we are solely focusing on back end web development and this is a fresh start  
 We will be focusing solely on back end. After successful completion, front end will have all our time  
