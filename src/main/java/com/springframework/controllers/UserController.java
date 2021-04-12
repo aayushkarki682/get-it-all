@@ -79,8 +79,6 @@ public class UserController {
         model.addAttribute("loggedUserId", loggedUserId);
         model.addAttribute("userpost", userPosts);
 
-
-      //  model.addAttribute("allPosts", );  todo add way to pass all images for the user
         System.out.println("User post id from index page after the post was submitted + "+userPosts.getId());
         return "index";
     }
@@ -97,14 +95,6 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/logout")
-    public String logOutUser(){
-        System.out.println(loggedUser.sizeOfPosts());
-        loggedUser = new User();
-        loggedUserId = 0L;
-        return "redirect:/user/";
-    }
-
     @PostMapping("/signUpSuccess")
     public String saveNewCustomer(@ModelAttribute User user){
         System.out.println(user.getEmail());
@@ -115,18 +105,7 @@ public class UserController {
         return "redirect:/user/";
     }
 
-    @PostMapping("/loginSuccess")
-    public String customerLoggedIn(@ModelAttribute("user") User user){
-        User retrievedUser = userService.checkLoginInfo(user);
-        if(retrievedUser != null){
-            loggedUserId = retrievedUser.getId();
-            loggedUser = retrievedUser;
-            return "redirect:/user/";
-        } else{
-            System.out.println("Invalid username");
-            return "redirect:/user/login";
-        }
-    }
+
 
     @GetMapping("/{id}/createPost")
     public String createNewPost(@PathVariable Long id, Model model){
@@ -145,14 +124,9 @@ public class UserController {
         newUser.getUserPosts().add(newUserPosts);
 
         UserPosts savedUserPost = userPostService.save(newUserPosts);
-//        userPosts.setId(savedUserPost.getId());
-//        userPosts.setUser(savedUserPost.getUser());
-//        userPosts.setPost(savedUserPost.getPost());
-//        userPosts.setImage(savedUserPost.getImage());
-//        loggedUser.getUserPosts().add(newUserPosts);
         userPosts = savedUserPost;
         loggedUser = newUser;
-      //  userPostService.saveUserPost(id, newUserPosts);
+
         return "redirect:/user/";
     }
 
@@ -180,6 +154,12 @@ public class UserController {
         }
     }
 
+    @GetMapping("/{userId}/userHomePage")
+    public String getUserHomePage(@PathVariable Long userId, Model model){
+        User thisUser = userService.findById(userId);
+        model.addAttribute("thisUser", thisUser);
+        return "userHomePage";
+    }
 
 
 

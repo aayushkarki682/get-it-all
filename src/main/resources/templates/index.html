@@ -93,7 +93,10 @@
                     <!-- body starts -->
                     <input type="hidden" id="userPostId" name="userPostId" th:value="${uniqUserPost.id}" />
                     <!-- Heading of the first post which contains user name -->
-                    <h4 class="card-title text-center" th:text="${uniqUserPost.user.firstName}"></h4>
+                    <a class="card-title text-center" th:href="@{'/user/'+${uniqUserPost.user.id}+'/userHomePage'}">
+                        <span class="text-center" th:text="${uniqUserPost.user.firstName}" style="font-size: large"></span>
+                    </a>
+
 
 
                     <hr>
