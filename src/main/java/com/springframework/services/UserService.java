@@ -12,6 +12,7 @@ public interface UserService{
     long count();
     User checkLoginInfo(User user);
     List<User> findAll();
+    String cd();
 
 
     User findById(Long id);
