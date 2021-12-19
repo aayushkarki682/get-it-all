@@ -39,10 +39,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User checkLoginInfo(User user) {
+        System.out.println("karki");
         String userName = user.getUsername();
         String password = user.getPassword();
         Optional<User> returnUser = userRepository.findByUserName(userName);
-        if(!returnUser.isEmpty()){
+        if(!returnUser.isPresent()){
             User returnedUser = returnUser.get();
             if(returnedUser.getPassword().equals(password)){
                 return returnedUser;
